@@ -1,6 +1,9 @@
 import { PrismaClient } from "database";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import messages from "messages";
+import statuscodes from "statuscodes";
+import { createResponse } from "responseutils";
 
 const prisma = new PrismaClient();
 const JWT_KEY = process.env.JWT_KEY;
@@ -29,5 +32,9 @@ export async function POST(request: Request) {
 
   var token = await jwt.sign(payload, JWT_KEY);
 
-  return Response.json({ token, user: { id: user.id, email: user.email } });
+  return createResponse({
+    message: messages.SUCCESS,
+    payload: { token, user: { id: user.id, email: user.email } },
+    status: statuscodes.OK,
+  });
 }
