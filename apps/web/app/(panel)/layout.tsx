@@ -91,7 +91,10 @@ export default function DashboardLayout({
           }}
         >
           <div className="flex items-center justify-center w-12 h-12 text-white border-2 border-white rounded-full">
-            <span className="text-2xl font-semibold select-none">
+            <span
+              className="text-2xl font-semibold select-none"
+              suppressHydrationWarning
+            >
               {email && email != "" ? email[0].toUpperCase() : "*"}
             </span>
           </div>

@@ -1,6 +1,13 @@
+"use client";
+
 import { useState } from "react";
 
 function useLocalStorage(key, initialValue) {
+  const isClient = typeof window !== "undefined";
+  if (!isClient) {
+    return [initialValue, () => {}, () => {}];
+  }
+
   // Retrieve the initial value from localStorage if it exists
   const storedValue = localStorage.getItem(key);
 
