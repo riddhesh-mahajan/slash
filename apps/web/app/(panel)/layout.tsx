@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function DashboardLayout({
   children,
@@ -12,6 +13,22 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [selectedTab, setselectedTab] = useState("dashboard");
   const [showProfileMenu, setshowProfileMenu] = useState(false);
+  const [accessToken, setaccessToken] = useLocalStorage("accessToken", "");
+  const [email, setemail] = useLocalStorage("email", "");
+
+  const searchParams = useSearchParams();
+  const accessTokenVal = searchParams.get("accessToken");
+  const emailVal = searchParams.get("email");
+
+  useEffect(() => {
+    if (accessTokenVal && accessTokenVal != "") {
+      setaccessToken(accessTokenVal);
+    }
+
+    if (emailVal && emailVal != "") {
+      setemail(emailVal);
+    }
+  }, [accessTokenVal, emailVal]);
 
   useEffect(() => {
     console.log(pathname);
@@ -74,7 +91,9 @@ export default function DashboardLayout({
           }}
         >
           <div className="flex items-center justify-center w-12 h-12 text-white border-2 border-white rounded-full">
-            <span className="text-2xl font-semibold select-none">J</span>
+            <span className="text-2xl font-semibold select-none">
+              {email && email != "" ? email[0].toUpperCase() : "*"}
+            </span>
           </div>
         </div>
 
@@ -83,7 +102,7 @@ export default function DashboardLayout({
             e.stopPropagation();
             setshowProfileMenu(!showProfileMenu);
           }}
-          className={`absolute right-0 z-10 w-56 mt-14 me-10 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+          className={`absolute right-0 z-10 w-32 mt-14 me-10 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
             showProfileMenu
               ? "transition ease-out duration-10 transform opacity-100 scale-100"
               : "transition ease-in duration-75 transform opacity-0 scale-95"

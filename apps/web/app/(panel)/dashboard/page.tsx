@@ -22,20 +22,6 @@ ChartJS.register(
 );
 
 function page() {
-  const searchParams = useSearchParams();
-  const accessToken = searchParams.get("accessToken");
-  const email = searchParams.get("email");
-
-  useEffect(() => {
-    if (accessToken && accessToken != "") {
-      localStorage.setItem("accessToken", accessToken);
-    }
-
-    if (email && email != "") {
-      localStorage.setItem("email", email);
-    }
-  }, [email, accessToken]);
-
   return (
     <div>
       <Doughnut
