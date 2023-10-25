@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import useLocalStorage from "@hooks/useLocalStorage";
 
 export default function DashboardLayout({
   children,
