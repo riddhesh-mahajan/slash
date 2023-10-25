@@ -2,26 +2,32 @@
 
 import { useState } from "react";
 
-function useLocalStorage(key, initialValue) {
-  const isClient = typeof window !== "undefined";
-  if (!isClient) {
-    return [initialValue, () => {}, () => {}];
+const processStoredValue = (storedValue) => {
+  try {
+    return JSON.parse(storedValue);
+  } catch (err) {
+    return storedValue;
   }
-
+};
+function useLocalStorage(key, initialValue) {
   // Retrieve the initial value from localStorage if it exists
   const storedValue = localStorage.getItem(key);
 
   // Create state with the initial value or the one from localStorage
   const [value, setValue] = useState(
-    storedValue ? JSON.parse(storedValue) : initialValue
+    storedValue ? processStoredValue(storedValue) : initialValue
   );
 
   // Function to update and store the value in localStorage
-  const setStoredValue = (newValue) => {
+  const setStoredValue = (newValue, raw = false) => {
     // Update the state
     setValue(newValue);
     // Store in localStorage
-    localStorage.setItem(key, JSON.stringify(newValue));
+    if (raw) {
+      localStorage.setItem(key, newValue);
+    } else {
+      localStorage.setItem(key, JSON.stringify(newValue));
+    }
   };
 
   // Function to remove the key and its value from localStorage

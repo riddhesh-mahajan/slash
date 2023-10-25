@@ -22,11 +22,11 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (accessTokenVal && accessTokenVal != "") {
-      setaccessToken(accessTokenVal);
+      setaccessToken(accessTokenVal, true);
     }
 
     if (emailVal && emailVal != "") {
-      setemail(emailVal);
+      setemail(emailVal, true);
     }
   }, [accessTokenVal, emailVal]);
 
