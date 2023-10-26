@@ -21,7 +21,7 @@ ChartJS.register(
   ArcElement
 );
 
-function page() {
+function page(): JSX.Element {
   return (
     <div>
       <Doughnut

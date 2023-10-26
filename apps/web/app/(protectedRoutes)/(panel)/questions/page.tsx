@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-function page() {
+function page(): JSX.Element {
   return (
     <div className="container mx-auto">
       <ul role="list" className="mb-2">

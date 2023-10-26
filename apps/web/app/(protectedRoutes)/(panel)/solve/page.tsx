@@ -1,6 +1,6 @@
 import React from "react";
 
-function page() {
+function page(): JSX.Element {
   return <div>Solve</div>;
 }
 
