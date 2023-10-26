@@ -3,6 +3,8 @@ import { FormikProvider, useFormik } from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function signup() {
   const ValidationSchema = Yup.object().shape({
@@ -64,7 +66,7 @@ function signup() {
                       <h3 className="text-3xl font-semibold leading-6 text-center">
                         Create New Account
                       </h3>
-                      <p className="mb-6 mt-4 text-sm text-center text-gray-500">
+                      <p className="mt-4 mb-6 text-sm text-center text-gray-500">
                         Level up your skills with Slash, the tool that
                         <br /> simplifies DSA problem-solving.
                       </p>
@@ -121,12 +123,19 @@ function signup() {
                             Object.keys(errors).length != 0 || isSubmitting
                           }
                           type="submit"
-                          className="w-full bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800 text-white font-semibold py-3 px-8 rounded-lg"
+                          className="w-full px-8 py-3 font-semibold text-white rounded-lg bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800"
                         >
-                          Submit
+                          {Object.keys(errors).length != 0 ||
+                            (isSubmitting && (
+                              <FontAwesomeIcon
+                                icon={faSpinner}
+                                className="animate-spin me-2"
+                              />
+                            ))}
+                          Create
                         </button>
 
-                        <p className="text-gray-500 text-center mt-4">
+                        <p className="mt-4 text-center text-gray-500">
                           Already have an account?{" "}
                           <Link href="/login" className="text-gray-400">
                             Login
