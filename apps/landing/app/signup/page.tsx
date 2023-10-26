@@ -20,16 +20,18 @@ function signup() {
       password: "",
     },
     validationSchema: ValidationSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      setSubmitting(true);
-
+    onSubmit: async (values, {}) => {
       try {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/signup`,
           JSON.stringify(values)
         );
 
-        if (response.data.message == "Contact request created successfully") {
+        if (response.data.message == "success") {
+          window.open(
+            `${process.env.NEXT_PUBLIC_DASHBOARD_BASE_URL}/dashboard?accessToken=${response.data.payload.token}&email=${response.data.payload.user.email}`,
+            "_self"
+          );
         }
       } catch (err) {
         console.log(err);

@@ -20,9 +20,7 @@ function login() {
       password: "",
     },
     validationSchema: ValidationSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      setSubmitting(true);
-
+    onSubmit: async (values, {}) => {
       try {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/login`,
