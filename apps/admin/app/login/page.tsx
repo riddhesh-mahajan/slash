@@ -29,7 +29,7 @@ function login() {
 
         if (response.data.message == "success") {
           window.open(
-            `/dashboard?accessToken=${response.data.payload.token}&email=${response.data.payload.user.email}`,
+            `/questions?accessToken=${response.data.payload.token}&email=${response.data.payload.user.email}`,
             "_self"
           );
         }
@@ -66,7 +66,7 @@ function login() {
                   <div className="sm:flex sm:items-start">
                     <div className="w-full mt-3">
                       <h3 className="text-3xl font-semibold leading-6 text-center">
-                        Log In
+                        Admin Log In
                       </h3>
                       <p className="mt-4 mb-6 text-sm text-center text-gray-500">
                         Level up your skills with Slash, the tool that
@@ -136,13 +136,6 @@ function login() {
                             ))}
                           Login
                         </button>
-
-                        <p className="mt-4 text-center text-gray-500">
-                          Don't have an account?{" "}
-                          <Link href="/signup" className="text-gray-400">
-                            Create New Account
-                          </Link>
-                        </p>
                       </div>
                     </div>
                   </div>
