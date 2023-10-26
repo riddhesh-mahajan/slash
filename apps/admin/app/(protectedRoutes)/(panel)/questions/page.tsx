@@ -152,6 +152,7 @@ function questions() {
                     <div className="flex justify-between w-full">
                       <div>
                         <button
+                          type="button"
                           onClick={() =>
                             arrayHelpers.push({
                               question: "",
