@@ -8,6 +8,20 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   let { qa } = await request.json();
 
+  // Remove deleted qa
+  const existingQA = await prisma.qa.findMany();
+  const existingQAIds = existingQA.map((qa) => qa.qid);
+  const newQAIds = qa.map((qa: any) => qa.qid);
+  const deletedQAIds = existingQAIds.filter(
+    (existingQAId) => !newQAIds.includes(existingQAId)
+  );
+  await Promise.all(
+    deletedQAIds.map(async (deletedQAId) => {
+      await prisma.qa.delete({ where: { qid: deletedQAId } });
+    })
+  );
+
+  // Add new qa
   await Promise.all(
     qa.map(
       async (singleQA: {
