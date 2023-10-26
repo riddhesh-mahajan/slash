@@ -10,13 +10,25 @@
     },
     "build": {
       "dependsOn": ["^build", "^db:generate"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "dotEnv": [
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
     },
     "lint": {},
     "dev": {
       "dependsOn": ["^db:generate"],
       "cache": false,
-      "persistent": true
+      "persistent": false,
+      "dotEnv": [
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
     }
   }
 }

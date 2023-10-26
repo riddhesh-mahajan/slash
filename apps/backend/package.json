@@ -9,18 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "database": "*",
+    "statuscodes": "*",
+    "responseutils": "*",
+    "messages": "*",
+    "jsonwebtoken": "^9.0.2",
     "next": "13.5.6",
-    "database": "*"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/bcryptjs": "^2.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "postcss": "^8",
-    "tailwindcss": "^3"
+    "tailwindcss": "^3",
+    "typescript": "^5"
   }
 }
