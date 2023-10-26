@@ -4,8 +4,12 @@ import { Field, FieldArray, Form, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { axiosInstance } from "@/utils/axiosHelpers";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 
 interface QaItem {
+  qid: string;
   question: string;
   answer: string;
   answerType: string;
@@ -15,6 +19,7 @@ function questions() {
   const RegisterSchema = Yup.object().shape({
     qa: Yup.array().of(
       Yup.object().shape({
+        qid: Yup.string().required(),
         question: Yup.string().required(),
         answer: Yup.string().required(),
         answerType: Yup.string().required(),
@@ -26,6 +31,7 @@ function questions() {
     initialValues: {
       qa: [
         {
+          qid: uuidv4(),
           question: "",
           answer: "",
           answerType: "",
@@ -35,11 +41,44 @@ function questions() {
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       console.log(values);
+
+      try {
+        const response = await axiosInstance.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/admin/questions`,
+          JSON.stringify(values)
+        );
+
+        if (response.data.message == "success") {
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, values } =
-    formik;
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    values,
+    setFieldValue,
+  } = formik;
+
+  const getqa = async () => {
+    const response = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/admin/questions`
+    );
+
+    if (response.data.message == "success") {
+      setFieldValue("qa", response.data.payload.qa);
+    }
+  };
+
+  useEffect(() => {
+    getqa();
+  }, []);
 
   return (
     <div>
@@ -80,7 +119,7 @@ function questions() {
                                 display:
                                   Object.keys(errors).includes("qa") &&
                                   errors[`qa`]?.length != 0 &&
-                                  errors?.qa?.[index]?.question
+                                  (errors?.qa?.[index] as any)?.question
                                     ? "block"
                                     : "none",
                               }}
@@ -104,7 +143,7 @@ function questions() {
                                   display:
                                     Object.keys(errors).includes("qa") &&
                                     errors[`qa`]?.length != 0 &&
-                                    errors?.qa?.[index]?.answer
+                                    (errors?.qa?.[index] as any)?.answer
                                       ? "block"
                                       : "none",
                                 }}
@@ -120,16 +159,11 @@ function questions() {
                                 className="w-full p-3 text-black rounded-sm"
                                 placeholder="Type"
                               >
-                                <option value="">Select Plan</option>
-                                <option value="ownerserver_standard_plan">
-                                  Standard Plan
-                                </option>
-                                <option value="ownerserver_each_pplan">
-                                  Each pplan
-                                </option>
-                                <option value="ownerserver_custom_olan">
-                                  Custom Olan
-                                </option>
+                                <option value="">Select Answer Type</option>
+                                <option value="string">String</option>
+                                <option value="number">Number</option>
+                                <option value="array">Array</option>
+                                <option value="object">Object</option>
                               </select>
                               <span
                                 className="text-red-400"
@@ -137,7 +171,7 @@ function questions() {
                                   display:
                                     Object.keys(errors).includes("qa") &&
                                     errors[`qa`]?.length != 0 &&
-                                    errors?.qa?.[index]?.answerType
+                                    (errors?.qa?.[index] as any)?.answerType
                                       ? "block"
                                       : "none",
                                 }}
@@ -155,6 +189,7 @@ function questions() {
                           type="button"
                           onClick={() =>
                             arrayHelpers.push({
+                              qid: uuidv4(),
                               question: "",
                               answer: "",
                               answerType: "",
