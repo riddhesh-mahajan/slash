@@ -22,17 +22,15 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (accessTokenVal && accessTokenVal != "") {
-      setaccessToken(accessTokenVal, true);
+      setaccessToken(accessTokenVal);
     }
 
     if (emailVal && emailVal != "") {
-      setemail(emailVal, true);
+      setemail(emailVal);
     }
   }, [accessTokenVal, emailVal]);
 
   useEffect(() => {
-    console.log(pathname);
-
     if (window.location.href.includes("dashboard")) {
       setselectedTab("dashboard");
     }

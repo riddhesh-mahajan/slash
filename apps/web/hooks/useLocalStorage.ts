@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 const processStoredValue = (storedValue) => {
   try {
     return JSON.parse(storedValue);
@@ -9,41 +7,45 @@ const processStoredValue = (storedValue) => {
     return storedValue;
   }
 };
-function useLocalStorage(key, initialValue) {
-  const isClient = typeof window !== "undefined";
-  if (!isClient) {
-    return [initialValue, () => {}, () => {}];
+
+const parseStoredValue = (storedValue) => {
+  try {
+    return JSON.parse(storedValue);
+  } catch (err) {
+    return storedValue;
   }
+};
 
-  // Retrieve the initial value from localStorage if it exists
-  const storedValue = localStorage.getItem(key);
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-  // Create state with the initial value or the one from localStorage
-  const [value, setValue] = useState(
-    storedValue ? processStoredValue(storedValue) : initialValue
-  );
+export default function useLocalStorage<T>(
+  key: string,
+  defaultValue: T
+): [T, Dispatch<SetStateAction<T>>] {
+  const isMounted = useRef(false);
+  const [value, setValue] = useState<T>(defaultValue);
 
-  // Function to update and store the value in localStorage
-  const setStoredValue = (newValue, raw = false) => {
-    // Update the state
-    setValue(newValue);
-    // Store in localStorage
-    if (raw) {
-      localStorage.setItem(key, newValue);
-    } else {
-      localStorage.setItem(key, JSON.stringify(newValue));
+  useEffect(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        setValue(parseStoredValue(item));
+      }
+    } catch (e) {
+      console.log(e);
     }
-  };
+    return () => {
+      isMounted.current = false;
+    };
+  }, [key]);
 
-  // Function to remove the key and its value from localStorage
-  const removeStoredValue = () => {
-    // Remove from state
-    setValue(null);
-    // Remove from localStorage
-    localStorage.removeItem(key);
-  };
+  useEffect(() => {
+    if (isMounted.current) {
+      window.localStorage.setItem(key, processStoredValue(value));
+    } else {
+      isMounted.current = true;
+    }
+  }, [key, value]);
 
-  return [value, setStoredValue, removeStoredValue];
+  return [value, setValue];
 }
-
-export default useLocalStorage;
