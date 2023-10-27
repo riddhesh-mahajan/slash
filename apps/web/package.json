@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-chartjs-2": "^2.5.7",
+    "@uiw/react-textarea-code-editor": "^2.1.9",
     "chart.js": "^4.4.0",
     "next": "^13.4.19",
     "react": "^18.2.0",

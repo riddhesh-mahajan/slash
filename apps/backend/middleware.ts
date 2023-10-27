@@ -15,7 +15,10 @@ export async function middleware(request: NextRequest) {
 
   // TODO: add conditional middleware for admin routes
 
-  if (request.url.includes("/api/questions")) {
+  if (
+    request.url.includes("/api/questions") ||
+    request.url.includes("/api/code")
+  ) {
     // If token is valid, continue to next request
     try {
       const secret = new TextEncoder().encode(JWT_KEY);
