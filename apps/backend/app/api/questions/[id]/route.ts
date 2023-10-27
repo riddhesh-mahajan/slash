@@ -5,14 +5,14 @@ import statuscodes from "statuscodes";
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request) {
-  console.log(request.url);
-  console.log(request.headers.get("userId"));
-  const qa = await prisma.qa.findMany();
+export async function GET(params: { id: number }, request: Request) {
+  const targetQuestion = await prisma.qa.findFirst({
+    where: { id: params.id },
+  });
 
   return createResponse({
     message: messages.SUCCESS,
-    payload: { qa },
+    payload: { targetQuestion },
     status: statuscodes.OK,
   });
 }

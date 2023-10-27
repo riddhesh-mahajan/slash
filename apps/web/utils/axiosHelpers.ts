@@ -2,6 +2,23 @@ import axios from "axios";
 
 const axiosInstance = axios.create();
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const tempConfig = config;
+
+    if (Object.keys(tempConfig.headers).includes("Authorization") === false) {
+      const token = localStorage.getItem("accessToken");
+      tempConfig.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return tempConfig;
+  },
+  (error) => {
+    console.error("✉️ ", error);
+    return Promise.reject(error);
+  }
+);
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;

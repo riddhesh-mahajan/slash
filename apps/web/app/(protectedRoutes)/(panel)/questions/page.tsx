@@ -32,7 +32,7 @@ function page(): JSX.Element {
       <ul role="list" className="mb-2">
         {allQuestions.map((questionData: questionData, index) => {
           return (
-            <Link href={`/solve`} key={index}>
+            <Link href={`/solve/${questionData.id}`} key={index}>
               <li className="flex px-5 py-5 mb-3 border-2 border-white rounded-lg cursor-pointer hover:bg-white hover:text-black">
                 <div className="flex min-w-0 gap-x-4">
                   <h2>Q{index + 1}</h2>
