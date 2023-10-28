@@ -34,6 +34,12 @@ export async function POST(request: Request) {
       fileName
     );
 
+    // Delete docker container
+    await codeRunUtil.deleteDockerContainer(imageName);
+
+    // Delete docker image
+    await codeRunUtil.deleteDockerImage(imageName);
+
     // Delete js and Dockerfile
     codeRunUtil.deleteFiles(rootPath, fileName);
 

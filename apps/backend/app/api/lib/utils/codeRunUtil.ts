@@ -31,7 +31,7 @@ async function buildDockerImage(
 
 async function runDockerContainer(imageName: string, fileName: string) {
   const { stdout, stderr } = await execPromise(
-    `docker run ${imageName} bash -c "node ${fileName}.js"`
+    `docker run --name ${imageName} ${imageName} bash -c "node ${fileName}.js"`
   );
   return { stdout, stderr };
 }
@@ -41,10 +41,22 @@ function deleteFiles(rootPath: string, fileName: string) {
   fs.unlinkSync(`${rootPath}dockerfiles/${fileName}.Dockerfile`);
 }
 
+async function deleteDockerContainer(imageName: string) {
+  const { stdout, stderr } = await execPromise(`docker rm ${imageName}`);
+  return { stdout, stderr };
+}
+
+async function deleteDockerImage(imageName: string) {
+  const { stdout, stderr } = await execPromise(`docker rmi ${imageName}`);
+  return { stdout, stderr };
+}
+
 export default {
   saveCodeToFile,
   createDockerfile,
   buildDockerImage,
   runDockerContainer,
   deleteFiles,
+  deleteDockerImage,
+  deleteDockerContainer,
 };
