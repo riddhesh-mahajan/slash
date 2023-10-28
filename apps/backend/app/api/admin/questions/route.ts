@@ -28,9 +28,10 @@ export async function POST(request: Request) {
         qid: string;
         question: string;
         answer: string;
-        answerType: string;
+        testCases: string;
+        template: string;
       }) => {
-        const { qid, question, answer, answerType } = singleQA;
+        const { qid, question, answer, testCases, template } = singleQA;
 
         // Get if qa already exists
         const existingQA = await prisma.qa.findUnique({ where: { qid } });
@@ -42,7 +43,19 @@ export async function POST(request: Request) {
               qid,
               question,
               answer,
-              answerType,
+              testCases,
+              template,
+            },
+          });
+        } else {
+          // Update existing qa
+          await prisma.qa.update({
+            where: { qid },
+            data: {
+              question,
+              answer,
+              testCases,
+              template,
             },
           });
         }

@@ -12,7 +12,6 @@ interface QaItem {
   qid: string;
   question: string;
   answer: string;
-  answerType: string;
 }
 
 function questions() {
@@ -21,8 +20,8 @@ function questions() {
       Yup.object().shape({
         qid: Yup.string().required(),
         question: Yup.string().required(),
-        answer: Yup.string().required(),
-        answerType: Yup.string().required(),
+        testCases: Yup.string().required(),
+        template: Yup.string().required(),
       })
     ),
   });
@@ -33,8 +32,8 @@ function questions() {
         {
           qid: uuidv4(),
           question: "",
-          answer: "",
-          answerType: "",
+          testCases: [],
+          template: "",
         },
       ],
     },
@@ -107,8 +106,12 @@ function questions() {
 
                           {/* Question */}
                           <div className="mb-3">
+                            <p className="mb-1 text-md text-slate-400">
+                              Question
+                            </p>
                             <Field
                               as="textarea"
+                              rows={10}
                               placeholder={`Question`}
                               name={`qa.${index}.question`}
                               className="w-full p-3 text-black rounded-sm"
@@ -128,57 +131,84 @@ function questions() {
                             </span>
                           </div>
 
-                          {/* Answer and answer type */}
-                          <div className="grid grid-cols-2 gap-4">
-                            {/* Answer */}
-                            <div>
-                              <Field
-                                placeholder={`Answer`}
-                                name={`qa.${index}.answer`}
-                                className="w-full p-3 text-black rounded-sm"
-                              />
-                              <span
-                                className="text-red-400"
-                                style={{
-                                  display:
-                                    Object.keys(errors).includes("qa") &&
-                                    errors[`qa`]?.length != 0 &&
-                                    (errors?.qa?.[index] as any)?.answer
-                                      ? "block"
-                                      : "none",
-                                }}
-                              >
-                                Answer is required
-                              </span>
-                            </div>
+                          {/* Input Object */}
+                          <div className="mb-3">
+                            <p className="mb-1 text-md text-slate-400">
+                              Test cases (Array of objects)
+                            </p>
+                            <Field
+                              as="textarea"
+                              rows={10}
+                              placeholder={`Test cases`}
+                              name={`qa.${index}.testCases`}
+                              className="w-full p-3 text-black rounded-sm"
+                            />
+                            <span
+                              className="text-red-400"
+                              style={{
+                                display:
+                                  Object.keys(errors).includes("qa") &&
+                                  errors[`qa`]?.length != 0 &&
+                                  (errors?.qa?.[index] as any)?.testCases
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Test cases is required
+                            </span>
+                          </div>
 
-                            {/* Answer Type */}
-                            <div>
-                              <select
-                                {...getFieldProps(`qa.${index}.answerType`)}
-                                className="w-full p-3 text-black rounded-sm"
-                                placeholder="Type"
-                              >
-                                <option value="">Select Answer Type</option>
-                                <option value="string">String</option>
-                                <option value="number">Number</option>
-                                <option value="array">Array</option>
-                                <option value="object">Object</option>
-                              </select>
-                              <span
-                                className="text-red-400"
-                                style={{
-                                  display:
-                                    Object.keys(errors).includes("qa") &&
-                                    errors[`qa`]?.length != 0 &&
-                                    (errors?.qa?.[index] as any)?.answerType
-                                      ? "block"
-                                      : "none",
-                                }}
-                              >
-                                Answer type is required
-                              </span>
-                            </div>
+                          {/* Template */}
+                          <div className="mb-3">
+                            <p className="mb-1 text-md text-slate-400">
+                              Template
+                            </p>
+                            <Field
+                              as="textarea"
+                              rows={10}
+                              placeholder={`Template`}
+                              name={`qa.${index}.template`}
+                              className="w-full p-3 text-black rounded-sm"
+                            />
+                            <span
+                              className="text-red-400"
+                              style={{
+                                display:
+                                  Object.keys(errors).includes("qa") &&
+                                  errors[`qa`]?.length != 0 &&
+                                  (errors?.qa?.[index] as any)?.template
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Template is required
+                            </span>
+                          </div>
+
+                          {/* Answer */}
+                          <div>
+                            <p className="mb-1 text-md text-slate-400">
+                              Answer (Array of answers for each testcase)
+                            </p>
+                            <Field
+                              as="textarea"
+                              placeholder={`Answer`}
+                              name={`qa.${index}.answer`}
+                              className="w-full p-3 text-black rounded-sm"
+                            />
+                            <span
+                              className="text-red-400"
+                              style={{
+                                display:
+                                  Object.keys(errors).includes("qa") &&
+                                  errors[`qa`]?.length != 0 &&
+                                  (errors?.qa?.[index] as any)?.answer
+                                    ? "block"
+                                    : "none",
+                              }}
+                            >
+                              Answer is required
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -192,7 +222,8 @@ function questions() {
                               qid: uuidv4(),
                               question: "",
                               answer: "",
-                              answerType: "",
+                              testCases: [],
+                              template: "",
                             })
                           }
                           className="px-8 py-3 font-semibold text-white rounded-lg bg-gradient-to-r from-blue-700 to-purple-700 hover:from-blue-800 hover:to-purple-800"

@@ -7,7 +7,6 @@ import { axiosInstance } from "@utilsaxiosHelpers";
 type questionData = {
   question: string;
   answer: string;
-  answerType: string;
   qid: string;
   id: string;
 };

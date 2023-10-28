@@ -14,38 +14,70 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
-    const fileName = uuidv4();
-    const imageName = uuidv4();
-    const { code } = await request.json();
+    const { code, questionId } = await request.json();
     const rootPath = __dirname.split(".next")[0];
 
-    // Save code to js file
-    codeRunUtil.saveCodeToFile(rootPath, fileName, code);
+    // Get target question
+    const targetQuestion = await prisma.qa.findFirst({
+      where: { id: parseInt(questionId) },
+    });
 
-    // Save Dockerfile
-    codeRunUtil.createDockerfile(rootPath, fileName);
+    if (!targetQuestion) {
+      return createResponse({
+        message: messages.SUCCESS,
+        payload: { error: "Question not found" },
+        status: statuscodes.OK,
+      });
+    }
 
-    // Build docker image
-    await codeRunUtil.buildDockerImage(rootPath, fileName, imageName);
+    let codeOutput: any[] = await Promise.all(
+      JSON.parse(targetQuestion.testCases).flatMap(
+        async (singleTestCaseInput: any, index: number) => {
+          const fileName = uuidv4();
+          const imageName = uuidv4();
 
-    // Run container
-    const { stdout } = await codeRunUtil.runDockerContainer(
-      imageName,
-      fileName
+          // Save code to js file
+          codeRunUtil.saveCodeToFile(
+            rootPath,
+            fileName,
+            code.replace("testSample", JSON.stringify(singleTestCaseInput))
+          );
+
+          // Save Dockerfile
+          codeRunUtil.createDockerfile(rootPath, fileName);
+
+          // Build docker image
+          await codeRunUtil.buildDockerImage(rootPath, fileName, imageName);
+
+          // Run container
+          const { stdout } = await codeRunUtil.runDockerContainer(
+            imageName,
+            fileName
+          );
+
+          // Delete docker container
+          await codeRunUtil.deleteDockerContainer(imageName);
+
+          // Delete docker image
+          await codeRunUtil.deleteDockerImage(imageName);
+
+          // Delete js and Dockerfile
+          codeRunUtil.deleteFiles(rootPath, fileName);
+
+          // Return output
+          return {
+            in: JSON.stringify(singleTestCaseInput),
+            out: stdout,
+            answer: JSON.parse(targetQuestion.answer)[index],
+          };
+        }
+      )
     );
 
-    // Delete docker container
-    await codeRunUtil.deleteDockerContainer(imageName);
-
-    // Delete docker image
-    await codeRunUtil.deleteDockerImage(imageName);
-
-    // Delete js and Dockerfile
-    codeRunUtil.deleteFiles(rootPath, fileName);
-
+    // Return output
     return createResponse({
       message: messages.SUCCESS,
-      payload: { output: stdout.toString() },
+      payload: { output: codeOutput },
       status: statuscodes.OK,
     });
   } catch (error) {

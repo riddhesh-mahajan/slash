@@ -4,22 +4,24 @@ import { axiosInstance } from "@utilsaxiosHelpers";
 import React, { useState, useEffect } from "react";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faVial,
+  faCircleCheck,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 type question = {
   question: string;
   answer: string;
-  answerType: string;
   qid: string;
   id: string;
 } | null;
 
 function page({ params }: { params: { id: number } }): JSX.Element {
   const [targetQuestion, settargetQuestion] = useState<question>(null);
-  const [code, setCode] = React.useState(
-    `function add(a, b) {\n  return a + b;\n}`
-  );
-  const [codeOutput, setcodeOutput] = useState("");
+  const [code, setCode] = React.useState(``);
+  const [codeOutput, setcodeOutput] = useState([]);
   const [isSubmitting, setisSubmitting] = useState(false);
 
   const getTargetQuestion = async () => {
@@ -29,6 +31,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
 
     if (response.data.message == "success") {
       settargetQuestion(response.data.payload.targetQuestion);
+      setCode(response.data.payload.targetQuestion.template);
     }
   };
 
@@ -75,9 +78,37 @@ function page({ params }: { params: { id: number } }): JSX.Element {
 
           <div className="mt-3">
             <p className="mb-1 text-1xl text-slate-300">Result</p>
-            <div className="p-2 bg-slate-800">
-              <p>{codeOutput}</p>
-            </div>
+            {codeOutput?.map(
+              (out: { in: string; out: string; answer: string }, index) => {
+                return (
+                  <div className="mb-2">
+                    <div className="p-2 mb-1 bg-slate-800">
+                      <p>
+                        <FontAwesomeIcon icon={faVial} className="me-2" />
+                        Testcase {index + 1}: {out.in}
+                      </p>
+                    </div>
+
+                    <div className="p-2 bg-slate-800">
+                      <p>
+                        {out.out.toString().trim() == out.answer.toString() ? (
+                          <FontAwesomeIcon
+                            icon={faCircleCheck}
+                            className="text-teal-400 me-2"
+                          />
+                        ) : (
+                          <FontAwesomeIcon
+                            icon={faCircleXmark}
+                            className="text-red-400 me-2"
+                          />
+                        )}
+                        Output: {out.out}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+            )}
           </div>
 
           <button

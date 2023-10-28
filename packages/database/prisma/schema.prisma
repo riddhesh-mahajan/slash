@@ -22,6 +22,7 @@ model qa {
   id    Int     @id @default(autoincrement())
   qid String @unique
   question String
-  answer  String
-  answerType String
+  answer  String @default("[]")
+  testCases String @default("[]")
+  template String @default("")
 }
