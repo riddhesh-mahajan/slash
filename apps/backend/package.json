@@ -19,7 +19,8 @@
     "react": "^18",
     "react-dom": "^18",
     "responseutils": "*",
-    "statuscodes": "*"
+    "statuscodes": "*",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.5",
