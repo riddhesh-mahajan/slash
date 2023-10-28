@@ -8,6 +8,11 @@ module.exports = {
             key: "Access-Control-Allow-Origin",
             value: "*",
           },
+          {
+            key: "Access-Control-Allow-Headers",
+            value:
+              "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+          },
         ],
       },
     ];

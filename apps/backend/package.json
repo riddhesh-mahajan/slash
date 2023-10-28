@@ -12,13 +12,15 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "database": "*",
-    "statuscodes": "*",
-    "responseutils": "*",
-    "messages": "*",
+    "jose": "^5.0.1",
     "jsonwebtoken": "^9.0.2",
+    "messages": "*",
     "next": "13.5.6",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "responseutils": "*",
+    "statuscodes": "*",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.5",

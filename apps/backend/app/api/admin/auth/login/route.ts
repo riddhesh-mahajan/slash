@@ -1,6 +1,6 @@
 import { PrismaClient } from "database";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import * as jose from "jose";
 import messages from "messages";
 import statuscodes from "statuscodes";
 import { createResponse } from "responseutils";
@@ -28,13 +28,17 @@ export async function POST(request: Request) {
     return Response.json({ error: "User is not admin" });
   }
 
-  // Create a new jwt token using jsonwebtoken
-  const payload = {
-    id: user.id,
-    email: email,
-  };
+  // Create and sign the JWT
+  const secret = new TextEncoder().encode(JWT_KEY);
+  const alg = "HS256";
 
-  var token = await jwt.sign(payload, JWT_KEY);
+  const token = await new jose.SignJWT({ id: user.id })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setIssuer("urn:example:issuer")
+    .setAudience("urn:example:audience")
+    .setExpirationTime("1y")
+    .sign(secret);
 
   return createResponse({
     message: messages.SUCCESS,
