@@ -6,6 +6,7 @@ import { exec } from "child_process";
 import util from "util";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import codeRunUtil from "../../lib/utils/codeRunUtil";
 
 const execPromise = util.promisify(exec);
 
@@ -16,38 +17,29 @@ export async function POST(request: Request) {
     const fileName = uuidv4();
     const imageName = uuidv4();
     const { code } = await request.json();
+    const rootPath = __dirname.split(".next")[0];
 
     // Save code to js file
-    fs.writeFileSync(
-      `${__dirname.split(".next")[0]}dockerfiles/${fileName}.js`,
-      code.toString()
-    );
+    codeRunUtil.saveCodeToFile(rootPath, fileName, code);
 
     // Save Dockerfile
-    fs.writeFileSync(
-      `${__dirname.split(".next")[0]}dockerfiles/${fileName}.Dockerfile`,
-      `
-FROM node:14
-WORKDIR /app
-COPY dockerfiles/app.js .
-`
-    );
+    codeRunUtil.createDockerfile(rootPath, fileName);
 
     // Build docker image
-    const { stdout, stderr } = await execPromise(
-      `docker build -t ${imageName} -f ${
-        __dirname.split(".next")[0]
-      }dockerfiles/${fileName}.Dockerfile .`
-    );
+    await codeRunUtil.buildDockerImage(rootPath, fileName, imageName);
 
     // Run container
-    const { stdout: runstdout, stderr: runstderr } = await execPromise(
-      `docker run ${imageName} bash -c "node app.js"`
+    const { stdout } = await codeRunUtil.runDockerContainer(
+      imageName,
+      fileName
     );
+
+    // Delete js and Dockerfile
+    codeRunUtil.deleteFiles(rootPath, fileName);
 
     return createResponse({
       message: messages.SUCCESS,
-      payload: { output: runstdout.toString() },
+      payload: { output: stdout.toString() },
       status: statuscodes.OK,
     });
   } catch (error) {
@@ -59,30 +51,4 @@ COPY dockerfiles/app.js .
       status: statuscodes.OK,
     });
   }
-
-  // exec(
-  //   `docker build -t my-node-app -f ${
-  //     __dirname.split(".next")[0]
-  //   }dockerfiles/test.Dockerfile .`,
-  //   (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`Error: ${error.message}`);
-  //       return;
-  //     }
-
-  //     if (stderr) {
-  //       console.error(`Error: ${stderr}`);
-  //       return;
-  //     }
-
-  //     console.log("Output:");
-  //     console.log(stdout);
-
-  //     return createResponse({
-  //       message: messages.SUCCESS,
-  //       payload: { output: stdout.toString() },
-  //       status: statuscodes.OK,
-  //     });
-  //   }
-  // );
 }

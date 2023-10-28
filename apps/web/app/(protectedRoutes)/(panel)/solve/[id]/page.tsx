@@ -17,6 +17,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
   const [code, setCode] = React.useState(
     `function add(a, b) {\n  return a + b;\n}`
   );
+  const [codeOutput, setcodeOutput] = useState("");
 
   const getTargetQuestion = async () => {
     const response = await axiosInstance.get(
@@ -35,6 +36,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
     );
 
     if (response.data.message == "success") {
+      setcodeOutput(response.data.payload.output);
     }
   };
 
@@ -65,6 +67,13 @@ function page({ params }: { params: { id: number } }): JSX.Element {
                 "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
             }}
           />
+
+          <div className="mt-3">
+            <p className="mb-1 text-1xl text-slate-300">Result</p>
+            <div className="h-8 p-2 bg-slate-800">
+              <p>{codeOutput}</p>
+            </div>
+          </div>
 
           <button
             className="px-8 py-2 mt-3 text-white bg-teal-600 rounded-md hover:bg-teal-800"
