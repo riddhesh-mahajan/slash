@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import useLocalStorage from "@hooks/useLocalStorage";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import useLocalStorage from "@hooks/useLocalStorage";
+import { useEffect, useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -11,8 +11,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [selectedTab, setselectedTab] = useState("dashboard");
-  const [showProfileMenu, setshowProfileMenu] = useState(false);
+  const [selectedTab, setselectedTab] = useState<string>("dashboard");
+  const [showProfileMenu, setshowProfileMenu] = useState<boolean>(false);
   const [accessToken, setaccessToken] = useLocalStorage("accessToken", "");
   const [email, setemail] = useLocalStorage("email", "");
 
