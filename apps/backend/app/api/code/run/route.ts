@@ -16,6 +16,7 @@ export async function POST(request: Request) {
   try {
     const { code, questionId } = await request.json();
     const rootPath = __dirname.split(".next")[0];
+    const userId = request.headers.get("userId");
 
     // Get target question
     const targetQuestion = await prisma.qa.findFirst({
@@ -73,6 +74,14 @@ export async function POST(request: Request) {
         }
       )
     );
+
+    // Record run
+    await prisma.run.create({
+      data: {
+        userId: parseInt(userId as string),
+        createdAt: new Date(),
+      },
+    });
 
     // Return output
     return createResponse({

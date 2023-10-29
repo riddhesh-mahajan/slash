@@ -17,6 +17,7 @@ export async function middleware(request: NextRequest) {
 
   if (
     request.url.includes("/api/questions") ||
+    request.url.includes("/api/dashboard") ||
     request.url.includes("/api/code")
   ) {
     // If token is valid, continue to next request
