@@ -25,9 +25,9 @@ export async function POST(request: Request) {
 
     if (!targetQuestion) {
       return createResponse({
-        message: messages.SUCCESS,
+        message: messages.ERROR,
         payload: { error: "Question not found" },
-        status: statuscodes.OK,
+        status: statuscodes.BAD_REQUEST,
       });
     }
 
@@ -89,13 +89,13 @@ export async function POST(request: Request) {
       payload: { output: codeOutput },
       status: statuscodes.OK,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error: ${error.message}`);
 
     return createResponse({
-      message: messages.SUCCESS,
+      message: messages.ERROR,
       payload: { error: error.toString() },
-      status: statuscodes.OK,
+      status: statuscodes.BAD_REQUEST,
     });
   }
 }

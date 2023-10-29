@@ -15,13 +15,21 @@ export async function POST(request: Request) {
   const user = await prisma.user.findUnique({ where: { email } });
   console.log(user);
   if (!user) {
-    return Response.json({ error: "User does not exist" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "User does not exist" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Check if password is correct
   const passwordMatch = await bcrypt.compare(password, user.password as string);
   if (!passwordMatch) {
-    return Response.json({ error: "Password is incorrect" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "Password is incorrect" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Create and sign the JWT

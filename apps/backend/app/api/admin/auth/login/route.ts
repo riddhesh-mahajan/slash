@@ -14,18 +14,30 @@ export async function POST(request: Request) {
   // Check if user already exists
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    return Response.json({ error: "User does not exist" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "User does not exist" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Check if password is correct
   const passwordMatch = await bcrypt.compare(password, user.password as string);
   if (!passwordMatch) {
-    return Response.json({ error: "Password is incorrect" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "Password is incorrect" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Check if user is admin
   if (!user.admin) {
-    return Response.json({ error: "User is not admin" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "User is not admin" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Create and sign the JWT
