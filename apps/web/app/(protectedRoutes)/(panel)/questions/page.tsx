@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { axiosInstance } from "@utilsaxiosHelpers";
+import Question from "components/Question";
+import { useEffect, useState } from "react";
 
 type questionData = {
   question: string;
@@ -10,6 +10,7 @@ type questionData = {
   qid: string;
   id: string;
 };
+
 function page(): JSX.Element {
   const [allQuestions, setallQuestions] = useState([]);
 
@@ -29,20 +30,9 @@ function page(): JSX.Element {
   return (
     <div className="container mx-auto">
       <ul role="list" className="mb-2">
-        {allQuestions.map((questionData: questionData, index) => {
+        {allQuestions.map((questionData: questionData, index: number) => {
           return (
-            <Link href={`/solve/${questionData.id}`} key={index}>
-              <li className="flex px-5 py-5 mb-3 border-2 border-white rounded-lg cursor-pointer hover:bg-white hover:text-black">
-                <div className="flex min-w-0 gap-x-4">
-                  <h2>Q{index + 1}</h2>
-                  <div className="flex-auto min-w-0">
-                    <p className="text-sm font-semibold leading-6">
-                      {questionData.question}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            </Link>
+            <Question questionData={questionData} index={index} key={index} />
           );
         })}
       </ul>

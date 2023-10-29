@@ -1,15 +1,11 @@
 "use client";
 
-import { axiosInstance } from "@utilsaxiosHelpers";
-import React, { useState, useEffect } from "react";
-import CodeEditor from "@uiw/react-textarea-code-editor";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSpinner,
-  faVial,
-  faCircleCheck,
-  faCircleXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import CodeEditor from "@uiw/react-textarea-code-editor";
+import { axiosInstance } from "@utilsaxiosHelpers";
+import TestcaseResult from "components/TestcaseResult";
+import React, { useEffect, useState } from "react";
 
 type question = {
   question: string;
@@ -24,7 +20,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
   const [codeOutput, setcodeOutput] = useState([]);
   const [isSubmitting, setisSubmitting] = useState(false);
 
-  const getTargetQuestion = async () => {
+  const getTargetQuestion = async (): Promise<void> => {
     const response = await axiosInstance.get(
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/questions/${params.id}}`
     );
@@ -35,7 +31,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
     }
   };
 
-  const runCode = async () => {
+  const runCode = async (): Promise<void> => {
     setisSubmitting(true);
     const response = await axiosInstance.post(
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/code/run`,
@@ -80,33 +76,7 @@ function page({ params }: { params: { id: number } }): JSX.Element {
             <p className="mb-1 text-1xl text-slate-300">Result</p>
             {codeOutput?.map(
               (out: { in: string; out: string; answer: string }, index) => {
-                return (
-                  <div className="mb-2">
-                    <div className="p-2 mb-1 bg-slate-800">
-                      <p>
-                        <FontAwesomeIcon icon={faVial} className="me-2" />
-                        Testcase {index + 1}: {out.in}
-                      </p>
-                    </div>
-
-                    <div className="p-2 bg-slate-800">
-                      <p>
-                        {out.out.toString().trim() == out.answer.toString() ? (
-                          <FontAwesomeIcon
-                            icon={faCircleCheck}
-                            className="text-teal-400 me-2"
-                          />
-                        ) : (
-                          <FontAwesomeIcon
-                            icon={faCircleXmark}
-                            className="text-red-400 me-2"
-                          />
-                        )}
-                        Output: {out.out}
-                      </p>
-                    </div>
-                  </div>
-                );
+                return <TestcaseResult out={out} index={index} key={index} />;
               }
             )}
           </div>

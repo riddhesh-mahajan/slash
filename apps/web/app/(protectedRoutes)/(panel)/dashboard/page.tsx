@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import moment from "moment";
+import Card from "components/Card";
 
 ChartJS.register(
   CategoryScale,
@@ -51,24 +52,17 @@ function page(): JSX.Element {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-3 gap-x-5 gap-y-5">
-        <div className="p-5 rounded-md bg-slate-800">
-          <p className="mb-3 text-md">Total Questions</p>
-          <p className="text-5xl font-bold">
-            {dashboardData?.totalQuestionsCount}
-          </p>
-        </div>
+        <Card
+          title="Total Questions"
+          value={dashboardData?.totalQuestionsCount?.toString()}
+        />
 
-        <div className="p-5 rounded-md bg-slate-800">
-          <p className="mb-3 text-md">Runs</p>
-          <p className="text-5xl font-bold">{dashboardData?.totalRuns}</p>
-        </div>
+        <Card title="Runs" value={dashboardData?.totalRuns?.toString()} />
 
-        <div className="p-5 rounded-md bg-slate-800">
-          <p className="mb-3 text-md">Last Login</p>
-          <p className="text-5xl font-bold">
-            {moment(dashboardData?.lastLogin).format("DD MMM, yyyy")}
-          </p>
-        </div>
+        <Card
+          title="Last Login"
+          value={moment(dashboardData?.lastLogin).format("DD MMM, yyyy")}
+        />
       </div>
 
       <div className="w-full mt-7">
