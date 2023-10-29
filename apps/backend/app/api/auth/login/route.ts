@@ -36,6 +36,12 @@ export async function POST(request: Request) {
     .setExpirationTime("1y")
     .sign(secret);
 
+  // Update last login
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { lastLogin: new Date() },
+  });
+
   return createResponse({
     message: messages.SUCCESS,
     payload: { token, user: { id: user.id, email: user.email } },

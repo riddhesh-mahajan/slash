@@ -16,6 +16,8 @@ model user {
   email String  @unique
   password  String?
   admin Boolean @default(false)
+  lastLogin DateTime?
+  runs run[]
 }
 
 model qa {
@@ -25,4 +27,12 @@ model qa {
   answer  String @default("[]")
   testCases String @default("[]")
   template String @default("")
+}
+
+model run {
+  id    Int     @id @default(autoincrement())
+  createdAt DateTime
+
+  userId Int @unique
+  user   user @relation(fields: [userId], references: [id])
 }
