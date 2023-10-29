@@ -1,6 +1,9 @@
 import { PrismaClient } from "database";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
+import messages from "messages";
+import statuscodes from "statuscodes";
+import { createResponse } from "responseutils";
 
 const prisma = new PrismaClient();
 const JWT_KEY = process.env.JWT_KEY;
@@ -11,7 +14,11 @@ export async function POST(request: Request) {
   // Check if user already exists
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
-    return Response.json({ error: "User already exists" });
+    return createResponse({
+      message: messages.ERROR,
+      payload: { error: "User already exists" },
+      status: statuscodes.BAD_REQUEST,
+    });
   }
 
   // Create a new user
