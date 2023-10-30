@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import moment from "moment";
-import Card from "components/Card";
+import Card from "components/card";
 
 ChartJS.register(
   CategoryScale,

@@ -11,7 +11,7 @@ function Question({
     id: string;
   };
   index: number;
-}) {
+}): JSX.Element {
   return (
     <Link href={`/solve/${questionData.id}`} key={index}>
       <li className="flex px-5 py-5 mb-3 border-2 border-white rounded-lg cursor-pointer hover:bg-white hover:text-black">

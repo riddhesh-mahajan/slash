@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/react-chartjs-2": "^2.5.7",
     "@uiw/react-textarea-code-editor": "^2.1.9",
     "chart.js": "^4.4.0",

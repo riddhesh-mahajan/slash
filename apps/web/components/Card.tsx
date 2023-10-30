@@ -6,7 +6,7 @@ function Card({
 }: {
   title: string;
   value?: string | number;
-}): React.ReactNode {
+}): JSX.Element {
   return (
     <div className="p-5 rounded-md bg-slate-800">
       <p className="mb-3 text-md">{title}</p>

@@ -4,7 +4,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import { axiosInstance } from "@utilsaxiosHelpers";
-import TestcaseResult from "components/TestcaseResult";
+import TestcaseResult from "components/testcaseResult";
 import React, { useEffect, useState } from "react";
 
 type question = {

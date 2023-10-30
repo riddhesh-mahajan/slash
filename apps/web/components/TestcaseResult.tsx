@@ -11,7 +11,7 @@ function TestcaseResult({
 }: {
   out: { in: string; out: string; answer: string };
   index: number;
-}) {
+}): JSX.Element {
   return (
     <div className="mb-2">
       <div className="p-2 mb-1 bg-slate-800">
