@@ -1,0 +1,8 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/(protectedRoutes)/(panel)/questions/page": "app/(protectedRoutes)/(panel)/questions/page.js",
+  "/(protectedRoutes)/(panel)/solve/[id]/page": "app/(protectedRoutes)/(panel)/solve/[id]/page.js",
+  "/(protectedRoutes)/(panel)/dashboard/page": "app/(protectedRoutes)/(panel)/dashboard/page.js"
+}
