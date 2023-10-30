@@ -38,26 +38,31 @@ jobs:
             source ~/.nvm/nvm.sh
 
             cd ./slash/apps/landing
+            yarn run build
             pm2 stop slash_landing
             pm2 delete slash_landing --force
             pm2 start yarn --name slash_landing -- start
 
             cd ../admin
+            yarn run build
             pm2 stop slash_admin
             pm2 delete slash_admin --force
             pm2 start yarn --name slash_admin -- start
 
             cd ../web
+            yarn run build
             pm2 stop slash_web
             pm2 delete slash_web --force
             pm2 start yarn --name slash_web -- start
 
             cd ../backend
+            yarn run build
             pm2 stop slash_backend
             pm2 delete slash_backend --force
             pm2 start yarn --name slash_backend -- start
 
             cd ../code_executor
+            yarn run build
             pm2 stop slash_code_executor
             pm2 delete slash_code_executor --force
             pm2 start yarn --name slash_code_executor -- start
