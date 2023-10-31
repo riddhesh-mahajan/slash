@@ -56,7 +56,11 @@ jobs:
             source ~/.nvm/nvm.sh
 
             cd ./slash
-            yarn turbo build
+            yarn turbo build --scope='admin'
+            yarn turbo build --scope='web'
+            yarn turbo build --scope='landing'
+            yarn turbo build --scope='backend'
+            yarn turbo build --scope='code_executor'
 
             cd ./slash/apps/landing
             pm2 stop slash_landing
