@@ -2,7 +2,7 @@ name: DeployPipeline
 
 on:
   push:
-    branches: ["master"]
+    branches: ["debug2"]
 
 jobs:
   deploy:
@@ -34,15 +34,11 @@ jobs:
       - name: "Install turbo"
         run: yarn global add turbo
       - name: Build
-        run: |
-          cd apps/web
-          yarn build
-          cd ../admin
-          yarn build
-          cd ../landing
-          yarn build
-      - name: Debug - List Files in Build Directory
+        run: yarn turbo build
+      - name: Debug - List Files in root Directory
         run: ls -al ./
+      - name: Debug - List Files in Web Build Directory
+        run: ls -al ./apps/web
       - name: Copy build to EC2
         uses: appleboy/scp-action@master
         with:
