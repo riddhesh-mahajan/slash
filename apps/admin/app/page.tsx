@@ -8,7 +8,7 @@ export default function Home() {
         <div className="flex flex-col pb-24 justify-items-center align-items-center max-h-min">
           <h1 className="font-bold leading-tight text-center text-8xl">
             <span className="text-blue-600">/</span>Slash Admin{" "}
-            {process.env.NEXT_PUBLIC_BACKEND_BASE_URL} {process.env.NODE_ENV}
+            {JSON.stringify(process.env)} {process.env.NODE_ENV}
           </h1>
 
           <p className="mt-4 text-xl text-center text-gray-500">
