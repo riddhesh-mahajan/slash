@@ -2,7 +2,7 @@ name: DeployPipeline
 
 on:
   push:
-    branches: ["pipeline-dev2"]
+    branches: ["master"]
 
 jobs:
   deploy:
