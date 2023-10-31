@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,10 +10,8 @@ export default function Home() {
         <div className="flex flex-col pb-24 justify-items-center align-items-center max-h-min">
           <h1 className="font-bold leading-tight text-center text-8xl">
             <span className="text-blue-600">/</span>Slash Admin{" "}
-            {process.env.NODE_ENV}
+            {process.env.NEXT_PUBLIC_BACKEND_BASE_URL}
           </h1>
-
-          <p>{JSON.stringify(process.env)}</p>
 
           <p className="mt-4 text-xl text-center text-gray-500">
             Admin dashboard for Slash. <br />
