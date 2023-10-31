@@ -8,6 +8,11 @@
 # testing
 /coverage
 
+# build
+/.next
+/out
+/.out
+
 # production
 /build
 
