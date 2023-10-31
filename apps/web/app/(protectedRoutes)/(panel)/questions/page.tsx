@@ -1,7 +1,7 @@
 "use client";
 
 import { axiosInstance } from "@utilsaxiosHelpers";
-import Question from "components/question";
+import Question from "components/Question";
 import { useEffect, useState } from "react";
 
 type questionData = {
