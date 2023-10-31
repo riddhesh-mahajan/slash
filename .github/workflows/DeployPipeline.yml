@@ -55,12 +55,14 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
 
+            pm2 stop all
             cd ./slash
             yarn turbo build --scope='admin'
             yarn turbo build --scope='web'
             yarn turbo build --scope='landing'
             yarn turbo build --scope='backend'
             yarn turbo build --scope='code_executor'
+            pm2 start all
 
             cd ./slash/apps/landing
             pm2 stop slash_landing
