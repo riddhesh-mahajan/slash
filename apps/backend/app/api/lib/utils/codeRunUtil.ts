@@ -18,20 +18,28 @@ function createDockerfile(rootPath: string, fileName: string) {
   );
 }
 
+function commandPrefix() {
+  if (process.env.USE_SUDO === "true") {
+    return "sudo ";
+  } else {
+    return "";
+  }
+}
+
 async function buildDockerImage(
   rootPath: string,
   fileName: string,
   imageName: string
 ) {
   const { stdout, stderr } = await execPromise(
-    `docker build -t ${imageName} -f ${rootPath}dockerfiles/${fileName}.Dockerfile .`
+    `${commandPrefix()}docker build -t ${imageName} -f ${rootPath}dockerfiles/${fileName}.Dockerfile .`
   );
   return { stdout, stderr };
 }
 
 async function runDockerContainer(imageName: string, fileName: string) {
   const { stdout, stderr } = await execPromise(
-    `docker run --name ${imageName} ${imageName} bash -c "node ${fileName}.js"`
+    `${commandPrefix()}docker run --name ${imageName} ${imageName} bash -c "node ${fileName}.js"`
   );
   return { stdout, stderr };
 }
@@ -42,12 +50,16 @@ function deleteFiles(rootPath: string, fileName: string) {
 }
 
 async function deleteDockerContainer(imageName: string) {
-  const { stdout, stderr } = await execPromise(`docker rm ${imageName}`);
+  const { stdout, stderr } = await execPromise(
+    `${commandPrefix()}docker rm ${imageName}`
+  );
   return { stdout, stderr };
 }
 
 async function deleteDockerImage(imageName: string) {
-  const { stdout, stderr } = await execPromise(`docker rmi ${imageName}`);
+  const { stdout, stderr } = await execPromise(
+    `${commandPrefix()}docker rmi ${imageName}`
+  );
   return { stdout, stderr };
 }
 
