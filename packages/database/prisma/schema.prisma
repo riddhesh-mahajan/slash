@@ -33,6 +33,6 @@ model run {
   id    Int     @id @default(autoincrement())
   createdAt DateTime
 
-  userId Int @unique
+  userId Int
   user   user @relation(fields: [userId], references: [id])
 }

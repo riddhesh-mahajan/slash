@@ -1,12 +1,10 @@
+import axios from "axios";
+import { exec } from "child_process";
 import { PrismaClient } from "database";
 import messages from "messages";
 import { createResponse } from "responseutils";
 import statuscodes from "statuscodes";
-import { exec } from "child_process";
 import util from "util";
-import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
-import codeRunUtil from "../../lib/utils/codeRunUtil";
 
 const execPromise = util.promisify(exec);
 
@@ -31,49 +29,16 @@ export async function POST(request: Request) {
       });
     }
 
-    let codeOutput: any[] = await Promise.all(
-      JSON.parse(targetQuestion.testCases).flatMap(
-        async (singleTestCaseInput: any, index: number) => {
-          const fileName = uuidv4();
-          const imageName = uuidv4();
-
-          // Save code to js file
-          codeRunUtil.saveCodeToFile(
-            rootPath,
-            fileName,
-            code.replace("testSample", JSON.stringify(singleTestCaseInput))
-          );
-
-          // Save Dockerfile
-          codeRunUtil.createDockerfile(rootPath, fileName);
-
-          // Build docker image
-          await codeRunUtil.buildDockerImage(rootPath, fileName, imageName);
-
-          // Run container
-          const { stdout } = await codeRunUtil.runDockerContainer(
-            imageName,
-            fileName
-          );
-
-          // Delete docker container
-          await codeRunUtil.deleteDockerContainer(imageName);
-
-          // Delete docker image
-          await codeRunUtil.deleteDockerImage(imageName);
-
-          // Delete js and Dockerfile
-          codeRunUtil.deleteFiles(rootPath, fileName);
-
-          // Return output
-          return {
-            in: JSON.stringify(singleTestCaseInput),
-            out: stdout,
-            answer: JSON.parse(targetQuestion.answer)[index],
-          };
-        }
-      )
+    const codeExecutionResponse = await axios.post(
+      `${process.env.CODE_EXECUTOR_URL}/api/code/run`,
+      {
+        code,
+        testCases: targetQuestion.testCases,
+        answer: targetQuestion.answer,
+      }
     );
+
+    let codeOutput: any[] = codeExecutionResponse.data.payload;
 
     // Record run
     await prisma.run.create({
