@@ -1,0 +1,89 @@
+name: DeployPipeline
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  deploy:
+    name: Build And Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Delete .git
+        run: rm -rf .git
+      - name: "Install yarn"
+        run: npm i --global yarn
+      - name: "Install root dependancies"
+        run: yarn install
+      - name: Install apps dependancies
+        run: |
+          cd apps/web
+          yarn install
+          cd ../admin
+          yarn install
+          cd ../landing
+          yarn install
+          cd ../backend
+          yarn install
+          cd ../code_executor
+          yarn install
+      - name: "Install turbo"
+        run: yarn global add turbo
+      - name: Build
+        run: |
+          cd apps/web
+          yarn build
+          cd ../admin
+          yarn build
+          cd ../landing
+          yarn build
+      - name: Debug - List Files in Build Directory
+        run: ls -al ./
+      - name: Copy build to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: ./
+          target: /home/ubuntu/slash/
+          overwrite: true
+
+      - name: SSH into EC2 and restart app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+
+            cd ./slash/apps/landing
+            pm2 stop slash_landing
+            pm2 delete slash_landing --force
+            pm2 start yarn --name slash_landing -- start
+
+            cd ../admin
+            pm2 stop slash_admin
+            pm2 delete slash_admin --force
+            pm2 start yarn --name slash_admin -- start
+
+            cd ../web
+            pm2 stop slash_web
+            pm2 delete slash_web --force
+            pm2 start yarn --name slash_web -- start
+
+            cd ../backend
+            pm2 stop slash_backend
+            pm2 delete slash_backend --force
+            pm2 start yarn --name slash_backend -- start
+
+            cd ../code_executor
+            pm2 stop slash_code_executor
+            pm2 delete slash_code_executor --force
+            pm2 start yarn --name slash_code_executor -- start

@@ -1,6 +1,6 @@
 "use client";
 
-const processStoredValue = (storedValue) => {
+const processStoredValue = (storedValue: any) => {
   try {
     return JSON.parse(storedValue);
   } catch (err) {
@@ -8,7 +8,7 @@ const processStoredValue = (storedValue) => {
   }
 };
 
-const parseStoredValue = (storedValue) => {
+const parseStoredValue = (storedValue: any) => {
   try {
     return JSON.parse(storedValue);
   } catch (err) {

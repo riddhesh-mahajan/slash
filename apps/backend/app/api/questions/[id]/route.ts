@@ -5,7 +5,10 @@ import statuscodes from "statuscodes";
 
 const prisma = new PrismaClient();
 
-export async function GET(params: { id: number }, request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: number } }
+) {
   const targetQuestion = await prisma.qa.findFirst({
     where: { id: params.id },
   });
