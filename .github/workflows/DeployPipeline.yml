@@ -64,6 +64,7 @@ jobs:
             yarn turbo build --scope='backend'
             yarn turbo build --scope='code_executor'
             pm2 start all
+            cd ../
 
             cd ./slash/apps/landing
             pm2 stop slash_landing
