@@ -78,12 +78,12 @@ jobs:
             pm2 delete slash_web --force
             pm2 start yarn --name slash_web -- start
 
-            # cd ../backend
-            # pm2 stop slash_backend
-            # pm2 delete slash_backend --force
-            # pm2 start yarn --name slash_backend -- start
+            cd ../backend
+            pm2 stop slash_backend
+            pm2 delete slash_backend --force
+            pm2 start yarn --name slash_backend -- start
 
-            # cd ../code_executor
-            # pm2 stop slash_code_executor
-            # pm2 delete slash_code_executor --force
-            # pm2 start yarn --name slash_code_executor -- start
+            cd ../code_executor
+            pm2 stop slash_code_executor
+            pm2 delete slash_code_executor --force
+            pm2 start yarn --name slash_code_executor -- start
