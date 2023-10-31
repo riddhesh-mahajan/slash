@@ -31,10 +31,6 @@ jobs:
           yarn install
           cd ../code_executor
           yarn install
-      - name: "Install turbo"
-        run: yarn global add turbo
-      - name: Build
-        run: yarn turbo build
       - name: Debug - List Files in root Directory
         run: ls -al ./
       - name: Debug - List Files in Web Build Directory
@@ -58,6 +54,9 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
+
+            cd ./slash
+            yarn turbo build
 
             cd ./slash/apps/landing
             pm2 stop slash_landing
