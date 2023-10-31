@@ -6,7 +6,7 @@ import statuscodes from "statuscodes";
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
-  const qa = await prisma.qa.findMany();
+  const qa = await prisma.qa.findMany({ orderBy: { id: "desc" } });
 
   return createResponse({
     message: messages.SUCCESS,
