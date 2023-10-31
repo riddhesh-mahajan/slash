@@ -55,6 +55,7 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
 
+            # Build
             pm2 stop all
             cd ./slash
             yarn turbo build --scope='admin'
