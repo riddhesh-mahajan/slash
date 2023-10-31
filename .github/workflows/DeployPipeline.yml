@@ -33,8 +33,14 @@ jobs:
           yarn install
       - name: "Install turbo"
         run: yarn global add turbo
-      - name: "Build"
-        run: turbo run build
+      - name: Build
+        run: |
+          cd apps/web
+          yarn build
+          cd ../admin
+          yarn build
+          cd ../landing
+          yarn build
       - name: Debug - List Files in Build Directory
         run: ls -al ./
       - name: Copy build to EC2
