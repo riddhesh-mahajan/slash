@@ -2,7 +2,7 @@ name: DeployPipeline
 
 on:
   push:
-    branches: ["master"]
+    branches: ["debug2"]
 
 jobs:
   deploy:
@@ -31,18 +31,10 @@ jobs:
           yarn install
           cd ../code_executor
           yarn install
-      - name: "Install turbo"
-        run: yarn global add turbo
-      - name: Build
-        run: |
-          cd apps/web
-          yarn build
-          cd ../admin
-          yarn build
-          cd ../landing
-          yarn build
-      - name: Debug - List Files in Build Directory
+      - name: Debug - List Files in root Directory
         run: ls -al ./
+      - name: Debug - List Files in Web Build Directory
+        run: ls -al ./apps/web
       - name: Copy build to EC2
         uses: appleboy/scp-action@master
         with:
@@ -62,6 +54,17 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
+
+            # Build
+            pm2 stop all
+            cd ./slash
+            yarn turbo build --scope='admin'
+            yarn turbo build --scope='web'
+            yarn turbo build --scope='landing'
+            yarn turbo build --scope='backend'
+            yarn turbo build --scope='code_executor'
+            pm2 start all
+            cd ../
 
             cd ./slash/apps/landing
             pm2 stop slash_landing
