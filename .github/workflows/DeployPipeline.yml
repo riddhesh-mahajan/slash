@@ -18,23 +18,23 @@ jobs:
       - name: "Install yarn"
         run: npm i --global yarn
       - name: "Install root dependancies"
-        run: yarn install --force
+        run: yarn install
       - name: Install apps dependancies
         run: |
           cd apps/web
-          yarn install --force
+          yarn install
           cd ../admin
-          yarn install --force
+          yarn install
           cd ../landing
-          yarn install --force
+          yarn install
           cd ../backend
-          yarn install --force
+          yarn install
           cd ../code_executor
-          yarn install --force
+          yarn install
       - name: "Install turbo"
         run: yarn global add turbo
       - name: "Build"
-        run: turbo run build --no-cache
+        run: turbo run build
       - name: Debug - List Files in Build Directory
         run: ls -al ./
       - name: Copy build to EC2
