@@ -29,16 +29,26 @@ export async function POST(request: Request) {
       });
     }
 
-    const codeExecutionResponse = await axios.post(
-      `${process.env.CODE_EXECUTOR_URL}/api/code/run`,
-      {
-        code,
-        testCases: targetQuestion.testCases,
-        answer: targetQuestion.answer,
-      }
-    );
+    let codeExecutionResponse = null;
 
-    let codeOutput: any[] = codeExecutionResponse.data.payload;
+    try {
+      codeExecutionResponse = await axios.post(
+        `${process.env.CODE_EXECUTOR_URL}/api/code/run`,
+        {
+          code,
+          testCases: targetQuestion.testCases,
+          answer: targetQuestion.answer,
+        }
+      );
+    } catch (err: any) {
+      return createResponse({
+        message: messages.ERROR,
+        payload: { error: err?.response?.data?.payload },
+        status: statuscodes.BAD_REQUEST,
+      });
+    }
+
+    let codeOutput: any[] = codeExecutionResponse?.data?.payload;
 
     // Record run
     await prisma.run.create({
