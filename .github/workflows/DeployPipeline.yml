@@ -58,6 +58,8 @@ jobs:
             # Build
             pm2 stop all
             cd ./slash
+            yarn turbo db:generate
+            yarn turbo db:push
             yarn turbo build --scope='admin'
             yarn turbo build --scope='web'
             yarn turbo build --scope='landing'
