@@ -7,10 +7,10 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
   const targetQuestion = await prisma.qa.findFirst({
-    where: { id: params.id },
+    where: { id: parseInt(params.id) },
   });
 
   return createResponse({
