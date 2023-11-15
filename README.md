@@ -1,81 +1,65 @@
-# Turborepo starter
+# Slash
 
-This is an official starter Turborepo.
+Level up your skills with Slash, the tool that simplifies DSA problem-solving.
 
-## Using this example
+[![Project Screenshot](/images/1.png)](https://slash-landing.riddhesh.dev/)
 
-Run the following command:
+## Live preview
 
-```sh
-npx create-turbo@latest
-```
+[Open Live Preview](https://slash-landing.riddhesh.dev/)
 
-## What's inside?
+## Test credentials
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+You can use following login credentials to login to the app.
 
 ```
-cd my-turborepo
-pnpm build
+Username: admin@gmail.com
+Password: admin@gmail.com
 ```
 
-### Develop
+## Technologies Used
 
-To develop all apps and packages, run the following command:
+- **Next.js**: A React framework that enables functionality like server-side rendering and generating static websites.
+- **Tailwind CSS**: A utility-first CSS framework for building modern and responsive user interfaces.
+- **Docker**: A tool designed to make it easier to create, deploy, and run applications by using containers.
+- **PostgreSQL**: A powerful, open-source object-relational database system.
+- **Prisma**: A database toolkit for Typescript and Node.js that makes it easy to access and manipulate databases.
+- **TurboRepo**: A tool that enables you to create and manage microservices with ease. [Learn More](https://turbo.build/repo)
 
-```
-cd my-turborepo
-pnpm dev
-```
+## Getting Started
 
-### Remote Caching
+To get started with the project, follow these steps (Please install turbo before proceeding, refer https://turbo.build/repo/docs/installing):
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+1. **Clone the repository:**
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+   ```bash
+   git clone https://github.com/riddhesh-mahajan/slash.git
+   ```
 
-```
-cd my-turborepo
-npx turbo login
-```
+2. **Install dependencies:**
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+   ```bash
+   cd slash
+   yarn
+   ```
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+3. **Add database url**
+   Create .env file inside packages/database. Add database url as following
 
-```
-npx turbo link
-```
+   ```
+   DATABASE_URL=postgresql://postgres:yourpassword@localhost:5434/slash?schema=public
+   ```
 
-## Useful Links
+4. **Run development server:**
+   ```
+   turbo dev
+   ```
 
-Learn more about the power of Turborepo:
+## Available Scripts
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- **`turbo dev`**: Starts the development server.
+- **`turbo build`**: Builds the application for production.
+
+## License
+
+This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as you see fit.
