@@ -69,6 +69,7 @@ jobs:
             cd ../
 
             cd ./slash/apps/landing
+            pm2 start yarn --name slash_landing -- start
             pm2 stop slash_landing
             pm2 start yarn --name slash_landing -- start
 
