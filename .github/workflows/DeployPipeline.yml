@@ -69,26 +69,26 @@ jobs:
             cd ../
 
             cd ./slash/apps/landing
-            pm2 stop slash_landing
-            pm2 delete slash_landing --force
+            pm2 stop slash_landing > /dev/null
+            pm2 delete slash_landing --force > /dev/null
             pm2 start yarn --name slash_landing -- start
 
             cd ../admin
-            pm2 stop slash_admin
-            pm2 delete slash_admin --force
+            pm2 stop slash_admin > /dev/null
+            pm2 delete slash_admin --force > /dev/null
             pm2 start yarn --name slash_admin -- start
 
             cd ../web
-            pm2 stop slash_web
-            pm2 delete slash_web --force
+            pm2 stop slash_web > /dev/null
+            pm2 delete slash_web --force > /dev/null
             pm2 start yarn --name slash_web -- start
 
             cd ../backend
-            pm2 stop slash_backend
-            pm2 delete slash_backend --force
+            pm2 stop slash_backend > /dev/null
+            pm2 delete slash_backend --force > /dev/null
             pm2 start yarn --name slash_backend -- start
 
             cd ../code_executor
-            pm2 stop slash_code_executor
-            pm2 delete slash_code_executor --force
+            pm2 stop slash_code_executor > /dev/null
+            pm2 delete slash_code_executor --force > /dev/null
             pm2 start yarn --name slash_code_executor -- start
