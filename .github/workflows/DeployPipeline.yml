@@ -2,7 +2,7 @@ name: DeployPipeline
 
 on:
   push:
-    branches: ["master"]
+    branches: ["pipeline-test"]
 
 jobs:
   deploy:
@@ -19,18 +19,6 @@ jobs:
         run: npm i --global yarn
       - name: "Install root dependancies"
         run: yarn install
-      - name: Install apps dependancies
-        run: |
-          cd apps/web
-          yarn install
-          cd ../admin
-          yarn install
-          cd ../landing
-          yarn install
-          cd ../backend
-          yarn install
-          cd ../code_executor
-          yarn install
       - name: Debug - List Files in root Directory
         run: ls -al ./
       - name: Debug - List Files in Web Build Directory
