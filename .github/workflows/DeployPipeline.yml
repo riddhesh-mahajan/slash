@@ -2,7 +2,7 @@ name: DeployPipeline
 
 on:
   push:
-    branches: ["master"]
+    branches: ["host-update"]
 
 jobs:
   deploy:
@@ -38,9 +38,9 @@ jobs:
       - name: Copy build to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+          username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+          password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           source: ./
           target: /home/ubuntu/slash/
           overwrite: true
@@ -48,9 +48,9 @@ jobs:
       - name: SSH into EC2 and restart app
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+          username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+          password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
@@ -68,7 +68,7 @@ jobs:
             pm2 start all
             cd ../
 
-            cd ./slash/apps/landing
+            cd /home/ubuntu/slash/apps/landing
             pm2 stop slash_landing
             pm2 start npm --name "slash_landing" -- start
 
