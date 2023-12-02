@@ -70,20 +70,25 @@ jobs:
 
             cd /home/ubuntu/slash/apps/landing
             pm2 stop slash_landing
+            pm2 delete slash_landing
             pm2 start npm --name "slash_landing" -- start
 
             cd ../admin
             pm2 stop slash_admin
+            pm2 delete slash_admin
             pm2 start npm --name "slash_admin" -- start
 
             cd ../web
             pm2 stop slash_web
+            pm2 delete slash_web
             pm2 start npm --name "slash_web" -- start
 
             cd ../backend
             pm2 stop slash_backend
+            pm2 delete slash_backend
             pm2 start npm --name "slash_backend" -- start
 
             cd ../code_executor
             pm2 stop slash_code_executor
+            pm2 delete slash_code_executor
             pm2 start npm --name "slash_code_executor" -- start
